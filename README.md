@@ -46,6 +46,20 @@ Status: 🚧 In Progress
 - Chunking documents with overlap (50 words) preserves context at boundaries, preventing important information from being split across chunks
 - OpenSearch Serverless has API differences from regular OpenSearch — custom document IDs and manual index refresh are not supported
 
+
+### Week 3: Streamlit Frontend
+
+- Built RAG pipeline (`rag_pipeline.py`) combining Week 2 embeddings with Amazon Nova LLM
+- Created Streamlit web interface for Q&A
+- Added conversation history and source document display
+- Implemented settings sidebar (number of sources, show/hide sources)
+
+**What I learned:**
+- How to build a web interface with Streamlit
+- How to cache resources with `@st.cache_resource`
+- How to manage session state in Streamlit
+- End-to-end RAG: retrieve → generate → display
+
 ## Setup
 
 ### Prerequisites
