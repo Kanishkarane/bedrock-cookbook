@@ -1,14 +1,14 @@
 """
 Set up OpenSearch index for vector storage
 """
-
+import os
 import boto3
 import json
 from opensearchpy import OpenSearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
 # Configuration - UPDATE THESE
-COLLECTION_ENDPOINT = ""  # e.g., https://xxxxx.us-east-1.aoss.amazonaws.com
+COLLECTION_ENDPOINT = ""# e.g., https://xxxxx.us-east-1.aoss.amazonaws.com
 REGION = "us-east-1"
 INDEX_NAME = "sec-filings"
 
