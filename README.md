@@ -60,6 +60,65 @@ Status: 🚧 In Progress
 - How to manage session state in Streamlit
 - End-to-end RAG: retrieve → generate → display
 
+
+## Recipe 02: Structured Data Extraction
+
+Extract structured JSON data from unstructured SEC filing text.
+
+### What it extracts
+
+- **Financials**: Revenue, operating income, net income, business segments
+- **Risks**: Categorized risk factors with summaries
+- **Executives**: Names, titles, ages, tenure
+
+### How it works
+
+1. Uses the retriever from Recipe 01 to find relevant text chunks
+2. Sends chunks to Claude with a specific extraction schema
+3. Parses JSON response and validates the data
+4. Combines into a complete company profile
+
+### Files
+
+- `basic_extraction.py` - Simple extraction example
+- `extractors.py` - Specialized extractors for different data types
+- `extraction_pipeline.py` - End-to-end pipeline
+- `validators.py` - Data validation helpers
+
+### Usage
+```python
+from extraction_pipeline import ExtractionPipeline
+
+pipeline = ExtractionPipeline()
+profile = pipeline.extract_company_profile("Amazon")
+profile.save("amazon_profile.json")
+```
+
+### Example output
+```json
+{
+  "company": "Amazon",
+  "financials": {
+    "revenue": {"amount_billions": 514, "year": 2022}
+  },
+  "risks": [
+    {"category": "Competitive", "title": "Intense competition", "summary": "..."}
+  ],
+  "executives": [
+    {"name": "Andy Jassy", "title": "CEO"}
+  ]
+}
+```
+
+### What I learned
+
+- RAG = retrieve relevant chunks → ground the LLM → get accurate answers
+- Classes exist to setup once (`__init__`), reuse everywhere (`self`)
+- AWS models have different request/response formats — wrong format = error
+- Prompts are code — schema + instructions = structured, reliable LLM output
+
+-
+
 ## Setup
 
 ### Prerequisites
