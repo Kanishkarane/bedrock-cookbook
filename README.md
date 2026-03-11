@@ -47,7 +47,7 @@ Status: 🚧 In Progress
 - OpenSearch Serverless has API differences from regular OpenSearch — custom document IDs and manual index refresh are not supported
 
 
-### Week 3: Streamlit Frontend
+### Week 3 & 4 : Streamlit Frontend & Rag pipeline
 
 - Built RAG pipeline (`rag_pipeline.py`) combining Week 2 embeddings with Amazon Nova LLM
 - Created Streamlit web interface for Q&A
@@ -60,7 +60,7 @@ Status: 🚧 In Progress
 - How to manage session state in Streamlit
 - End-to-end RAG: retrieve → generate → display
 
-
+Week 5:
 ## Recipe 02: Structured Data Extraction
 
 Extract structured JSON data from unstructured SEC filing text.
