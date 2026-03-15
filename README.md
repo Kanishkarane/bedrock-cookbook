@@ -111,13 +111,11 @@ profile.save("amazon_profile.json")
 ```
 
 ### What I learned
-
-- RAG = retrieve relevant chunks → ground the LLM → get accurate answers
-- Classes exist to setup once (`__init__`), reuse everywhere (`self`)
-- AWS models have different request/response formats — wrong format = error
-- Prompts are code — schema + instructions = structured, reliable LLM output
-
--
+- Extraction returns structured JSON instead of free text — better for databases, dashboards, and comparisons
+- Schema-based prompting: give the LLM a template to fill in, not just a question to answer
+- Always clean LLM responses before parsing JSON — models sometimes wrap output in code blocks
+- Single responsibility architecture: retriever fetches, extractor extracts, validator checks, pipeline orchestrates
+- Never trust LLM output blindly — validate ranges, required fields, and impossible values
 
 ## Setup
 
