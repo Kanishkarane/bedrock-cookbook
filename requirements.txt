@@ -3,3 +3,5 @@ python-dotenv>=1.0.0
 opensearch-py>=2.4.0
 requests-aws4auth>=1.2.0
 streamlit>=1.32.0
+strands-agents>=1.30.0
+strands-agents-tools>=0.1.0

@@ -25,5 +25,5 @@ def get_config():
             "aws_access_key_id": os.getenv("AWS_ACCESS_KEY_ID"),
             "aws_secret_access_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
             "aws_region": os.getenv("AWS_DEFAULT_REGION", "us-east-1"),
-            "opensearch_endpoint": os.getenv("OPENSEARCH_ENDPOINT"),
+            "collection_endpoint": os.getenv("COLLECTION_ENDPOINT"),
         }

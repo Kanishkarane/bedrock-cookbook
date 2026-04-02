@@ -2,6 +2,7 @@
 Set up OpenSearch index for vector storage
 """
 import os
+import sys
 import boto3
 import json
 from opensearchpy import OpenSearch, RequestsHttpConnection
@@ -20,6 +21,9 @@ def get_opensearch_client():
     """
     Create OpenSearch client with AWS auth.
     """
+    if not COLLECTION_ENDPOINT:
+        raise ValueError("COLLECTION_ENDPOINT environment variable is not set.")
+
     credentials = boto3.Session().get_credentials()
     auth = AWS4Auth(
         credentials.access_key,
@@ -78,14 +82,43 @@ def create_index(client):
     return response
 
 
+def validate_index(client):
+    """
+    Confirm the embedding field is correctly mapped as knn_vector.
+    """
+    mapping = client.indices.get_mapping(index=INDEX_NAME)
+    props = mapping[INDEX_NAME]["mappings"]["properties"]
+    embedding_type = props.get("embedding", {}).get("type")
+    if embedding_type == "knn_vector":
+        print(f"  ✓ 'embedding' field is correctly mapped as knn_vector")
+    else:
+        print(f"  ✗ 'embedding' field type is '{embedding_type}' — expected 'knn_vector'")
+        print("    Run with --recreate to fix this.")
+
+
 if __name__ == "__main__":
+    recreate = "--recreate" in sys.argv
+
     print("Connecting to OpenSearch...")
     client = get_opensearch_client()
-    
-    # Check if index exists
+    print("✓ Connected\n")
+
     if client.indices.exists(index=INDEX_NAME):
-        print(f"Index '{INDEX_NAME}' already exists")
-    else:
-        print(f"Creating index '{INDEX_NAME}'...")
-        response = create_index(client)
-        print(f"✓ Index created: {response}")
+        if recreate:
+            print(f"Deleting existing index '{INDEX_NAME}'...")
+            client.indices.delete(index=INDEX_NAME)
+            print(f"✓ Deleted '{INDEX_NAME}'\n")
+        else:
+            print(f"Index '{INDEX_NAME}' already exists.")
+            print("Validating mapping...")
+            validate_index(client)
+            print("\nTo recreate the index with the correct mapping, run:")
+            print("  python setup_opensearch.py --recreate")
+            sys.exit(0)
+
+    print(f"Creating index '{INDEX_NAME}'...")
+    response = create_index(client)
+    print(f"✓ Index created: {response}\n")
+
+    print("Validating mapping...")
+    validate_index(client)

@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration
-COLLECTION_ENDPOINT = ""
+COLLECTION_ENDPOINT =""
 REGION = "us-east-1"
 INDEX_NAME = "sec-filings"
 

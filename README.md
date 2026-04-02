@@ -47,7 +47,7 @@ Status: 🚧 In Progress
 - OpenSearch Serverless has API differences from regular OpenSearch — custom document IDs and manual index refresh are not supported
 
 
-### Week 3: Streamlit Frontend
+### Week 3 & 4 : Streamlit Frontend & Rag pipeline
 
 - Built RAG pipeline (`rag_pipeline.py`) combining Week 2 embeddings with Amazon Nova LLM
 - Created Streamlit web interface for Q&A
@@ -60,7 +60,7 @@ Status: 🚧 In Progress
 - How to manage session state in Streamlit
 - End-to-end RAG: retrieve → generate → display
 
-
+Week 5:
 ## Recipe 02: Structured Data Extraction
 
 Extract structured JSON data from unstructured SEC filing text.
@@ -111,14 +111,62 @@ profile.save("amazon_profile.json")
 ```
 
 ### What I learned
+- Extraction returns structured JSON instead of free text — better for databases, dashboards, and comparisons
+- Schema-based prompting: give the LLM a template to fill in, not just a question to answer
+- Always clean LLM responses before parsing JSON — models sometimes wrap output in code blocks
+- Single responsibility architecture: retriever fetches, extractor extracts, validator checks, pipeline orchestrates
+- Never trust LLM output blindly — validate ranges, required fields, and impossible values
 
-- RAG = retrieve relevant chunks → ground the LLM → get accurate answers
-- Classes exist to setup once (`__init__`), reuse everywhere (`self`)
-- AWS models have different request/response formats — wrong format = error
-- Prompts are code — schema + instructions = structured, reliable LLM output
+  
+Week 6 :
 
--
+## Recipe 03: Agentic RAG with Strands
 
+An intelligent agent that autonomously decides how to answer questions about Amazon's SEC filings.
+
+### What makes it agentic?
+
+Unlike the fixed RAG pipeline in Recipe 01, this agent:
+- **Reasons** about what information it needs
+- **Chooses** which tool to use (or no tool at all)
+- **Iterates** if the first approach doesn't work
+- **Maintains context** across a conversation
+
+### Tools available to the agent
+
+| Tool                 | Purpose                             |
+| `search_sec_filings` | Semantic search over 10-K documents |
+| `extract_financials` | Pull structured financial metrics   |
+| `extract_risks`      | Extract categorized risk factors    |
+| `extract_executives` | Get leadership information          |
+
+### Files
+
+- `sec_tools.py` - Tool definitions wrapping existing code
+- `sec_agent.py` - Main agent with system prompt
+- `hello_strands.py` - Basic Strands introduction
+- `agent_with_tool.py` - Simple tool example
+
+### Usage
+```python
+from sec_agent import create_agent
+
+agent = create_agent()
+response = agent("What are Amazon's main risks?")
+print(response)
+```
+
+### What I learned
+
+- Agents dynamically **reason about which tool to use** based on the question — unlike Recipe 01 where the flow was always retrieve → generate
+- **Tool docstrings are the agent's instructions** — the agent reads them to decide when to call each tool, so vague docstrings lead to wrong tool choices
+- Setting up OpenSearch correctly matters — **index mappings must define `knn_vector` upfront** or vector search silently breaks
+- **Conversation memory** via `SlidingWindowConversationManager` is what enables follow-up questions — without it the agent treats every message as a fresh conversation
+- Tools are just **regular Python functions** wrapped with `@tool` — your existing retriever and extractor code needed almost no changes
+- The agent **skips tools entirely** for general knowledge questions like "what does SEC stand for?" — it only calls tools when it genuinely needs data
+- When the agent picks the **wrong tool**, the fix is in the docstring — not the code itself
+
+  
 ## Setup
 
 ### Prerequisites
