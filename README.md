@@ -166,7 +166,38 @@ print(response)
 - The agent **skips tools entirely** for general knowledge questions like "what does SEC stand for?" — it only calls tools when it genuinely needs data
 - When the agent picks the **wrong tool**, the fix is in the docstring — not the code itself
 
-  
+Week 7:
+
+## Recipe 03: Streamlit UI for Agentic RAG
+
+A chat interface for the SEC Filing Agent from Week 6, built with Streamlit.
+
+### What it does
+
+- Chat with the SEC agent in natural language
+- Shows which tools the agent used per response (e.g. `search_sec_filings`, `extract_risks`)
+- Example question buttons so users know what to ask
+- Formats JSON responses with `st.json()`
+- Clear conversation button
+
+### Files
+
+- `app.py` - Main Streamlit chat interface
+- `sec_agent.py` - Agent definition (from Week 6)
+- `sec_tools.py` - Tool definitions (from Week 6)
+
+### Usage
+```bash
+streamlit run recipes/03-agentic-rag/app.py
+```
+
+### What I learned
+
+- `st.session_state` is essential — initialize the agent once, not on every rerender
+- Tool usage is best captured via a callback handler wrapping the agent, not by parsing response text
+- Streamlit Cloud doesn't read `.env` files — AWS credentials must be added as Streamlit Secrets
+- When modules live across multiple folders, the cleanest fix is to copy dependencies into the same directory as `app.py` rather than fighting `sys.path`
+ 
 ## Setup
 
 ### Prerequisites
