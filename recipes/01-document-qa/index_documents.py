@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration - UPDATE THESE
-COLLECTION_ENDPOINT = ""
+COLLECTION_ENDPOINT = "https://gxtuw6pvxpctmvf9ezzd.us-east-1.aoss.amazonaws.com"
 REGION = "us-east-1"
 INDEX_NAME = "sec-filings"
 
