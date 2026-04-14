@@ -15,7 +15,7 @@ def get_config():
             "aws_access_key_id": st.secrets["AWS_ACCESS_KEY_ID"],
             "aws_secret_access_key": st.secrets["AWS_SECRET_ACCESS_KEY"],
             "aws_region": st.secrets.get("AWS_DEFAULT_REGION", "us-east-1"),
-            "opensearch_endpoint": st.secrets["OPENSEARCH_ENDPOINT"],
+            "collection_endpoint": st.secrets["COLLECTION_ENDPOINT"],
         }
     except:
         # Fall back to environment variables (for local development)
@@ -25,5 +25,5 @@ def get_config():
             "aws_access_key_id": os.getenv("AWS_ACCESS_KEY_ID"),
             "aws_secret_access_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
             "aws_region": os.getenv("AWS_DEFAULT_REGION", "us-east-1"),
-            "opensearch_endpoint": os.getenv("OPENSEARCH_ENDPOINT"),
+            "collection_endpoint": os.getenv("COLLECTION_ENDPOINT"),
         }
