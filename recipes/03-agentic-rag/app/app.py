@@ -2,6 +2,7 @@ import streamlit as st
 import sys
 import os
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 # Fix path so Python can find sec_tools.py
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT not in sys.path:
