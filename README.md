@@ -197,7 +197,40 @@ streamlit run recipes/03-agentic-rag/app.py
 - Tool usage is best captured via a callback handler wrapping the agent, not by parsing response text
 - Streamlit Cloud doesn't read `.env` files — AWS credentials must be added as Streamlit Secrets
 - When modules live across multiple folders, the cleanest fix is to copy dependencies into the same directory as `app.py` rather than fighting `sys.path`
- 
+
+Week 8: 
+## Recipe 04 — Research Copilot (Scout Agent)
+A multi-agent system that helps researchers find and synthesize academic papers, built with LangGraph.
+
+## What it does
+
+* Searches arXiv and Semantic Scholar for papers using natural language queries
+* Remembers past searches and context across sessions (SQLite memory)
+* Routes between search tools and summarization using conditional edges
+* Supports multi-turn conversation with persistent `thread_id`
+
+## Files
+
+* `scout_agent.py` - Scout agent definition with arxiv + semantic scholar tools
+* `hello_langgraph.py` - LangGraph basics exercise (state, nodes, edges)
+* `research_memory.db` - SQLite checkpoint store (auto-generated)
+
+## Usage
+
+```bash
+pip install langgraph langchain-aws langchain-community langgraph-checkpoint-sqlite arxiv
+python scout_agent.py
+```
+
+## What I learned
+
+* LangGraph state is a `TypedDict` — nodes return partial dicts, not the full state
+* `tools_condition` handles the agent ↔ tool loop automatically; no manual routing needed
+* SQLite checkpointer requires a `thread_id` in config — same ID resumes the exact conversation
+* Semantic Scholar returns `None` for abstract on some papers; always `.get()` with a fallback
+* Deduplication across two search sources needs a seen-titles set, not just list concatenation
+
+
 ## Setup
 
 ### Prerequisites

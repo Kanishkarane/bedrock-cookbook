@@ -5,3 +5,10 @@ requests-aws4auth>=1.2.0
 streamlit>=1.32.0
 strands-agents>=1.30.0
 strands-agents-tools>=0.1.0
+langgraph
+langchain
+langchain-aws
+langchain-community
+langgraph-checkpoint-sqlite
+arxiv
+requests
